@@ -1,32 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
+	"github.com/semeniuta/AdventOfCode2018/aoccommons"
 )
-
-func checkError(err error) {
-	if err != nil {
-		log.Fatalln(err)
-	}
-}
-
-func createScanner(filename string) *bufio.Scanner {
-
-	file, err := os.Open(filename)
-	checkError(err)
-
-	reader := bufio.NewReader(file)
-	scanner := bufio.NewScanner(reader)
-
-	return scanner
-
-}
 
 func parseNumber(line string) int {
 
@@ -39,17 +20,17 @@ func parseNumber(line string) int {
 	}
 
 	number, err := strconv.Atoi(sNumber)
-	checkError(err)
+	aoccommons.CheckError(err)
 
 	return sign * number
 }
 
 func readChanges(filename string) []int {
 
-	scanner := createScanner(filename)
+	scanner := aoccommons.CreateScanner(filename)
 
 	rValidate, err := regexp.Compile("^[+-][0-9]+$")
-	checkError(err)
+	aoccommons.CheckError(err)
 
 	var changes []int
 
@@ -61,7 +42,6 @@ func readChanges(filename string) []int {
 
 		if !matched {
 			log.Fatalln("Wrong formatting in line", line)
-			return nil
 		}
 
 		number := parseNumber(line)
