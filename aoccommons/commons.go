@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"log"
+	"strings"
 )
 
 func CheckError(err error) {
@@ -21,5 +22,20 @@ func CreateScanner(filename string) *bufio.Scanner {
 	scanner := bufio.NewScanner(reader)
 
 	return scanner
+
+}
+
+func ReadLines(filename string) []string {
+
+	scanner := CreateScanner(filename)
+
+	var lines []string
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		lines = append(lines, line)
+	}
+
+	return lines
 
 }

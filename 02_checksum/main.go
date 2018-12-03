@@ -3,24 +3,8 @@ package main
 import (
 	"log"
 	"fmt"
-	"strings"
 	"github.com/semeniuta/AdventOfCode2018/aoccommons"
 )
-
-func readLines(filename string) []string {
-
-	scanner := aoccommons.CreateScanner(filename)
-
-	var lines []string
-
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		lines = append(lines, line)
-	}
-
-	return lines
-
-}
 
 func analyzeLine(line string) (bool, bool) {
 
@@ -141,7 +125,7 @@ func findSimilar(lines []string) string {
 	}
 
 	alreadyCompared := make(map[pair]bool)
-	
+
 	for i, line1 := range(lines) {
 
 		for j, line2 := range(lines) {
@@ -176,7 +160,7 @@ func main() {
 	// Correct common characters: wmlnjevbfodamyiqpucrhsukg
 
 	filename := "input.txt"
-	lines := readLines(filename)
+	lines := aoccommons.ReadLines(filename)
 
 	checksum := computeChecksum(lines)
 	fmt.Println("Checksum:", checksum)
