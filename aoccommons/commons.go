@@ -5,6 +5,7 @@ import (
 	"os"
 	"log"
 	"strings"
+	"regexp"
 )
 
 func CheckError(err error) {
@@ -37,5 +38,21 @@ func ReadLines(filename string) []string {
 	}
 
 	return lines
+
+}
+
+func RegexParse(expression *regexp.Regexp, s string) map[string]string {
+
+	match := expression.FindStringSubmatch(s)
+
+	result := make(map[string]string)
+
+	for i, name := range expression.SubexpNames() {
+		if i > 0 {
+			result[name] = match[i]
+		}
+	}
+
+	return result
 
 }
