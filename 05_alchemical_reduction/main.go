@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/semeniuta/AdventOfCode2018/aoccommons"
 	"fmt"
+	"github.com/semeniuta/AdventOfCode2018/aoccommons"
 )
 
 func absInt(b int) int {
-	
+
 	if b < 0 {
 		return -b
 	}
@@ -15,7 +15,7 @@ func absInt(b int) int {
 }
 
 func areActive(a byte, b byte) bool {
-	
+
 	diff := int(a) - int(b)
 	absDiff := absInt(diff)
 	return absDiff == 32
@@ -27,7 +27,7 @@ func strech(polymer string) string {
 	var streched []byte
 
 	var i int
-	for i < len(polymer) - 1 {
+	for i < len(polymer)-1 {
 
 		a := polymer[i]
 		b := polymer[i+1]
@@ -42,7 +42,7 @@ func strech(polymer string) string {
 
 	}
 
-	streched = append(streched, polymer[len(polymer) - 1])
+	streched = append(streched, polymer[len(polymer)-1])
 
 	return string(streched)
 
@@ -54,12 +54,12 @@ func strechLoop(polymer string) string {
 	currentLen := len(currentPolymer)
 
 	for true {
-		
+
 		newPolymer := strech(currentPolymer)
 		newLen := len(newPolymer)
 
 		currentPolymer = newPolymer
-		
+
 		if newLen == currentLen {
 			break
 		}
@@ -71,17 +71,62 @@ func strechLoop(polymer string) string {
 
 }
 
+func removeChar(s string, c byte) string {
+
+	c2 := c + 32
+
+	var res []byte
+	for i := 0; i < len(s); i++ {
+
+		currentChar := s[i]
+		if currentChar == c || currentChar == c2 {
+			continue
+		}
+
+		res = append(res, currentChar)
+
+	}
+
+	return string(res)
+
+}
+
+func detectProblematicChar(s string) (byte, int) {
+
+	scores := make(map[byte]int)
+
+	var c byte
+	for c = 'A'; c <= 'Z'; c++ {
+
+		sModified := removeChar(s, c)
+		streched := strechLoop(sModified)
+		scores[c] = len(streched)
+
+	}
+
+	minScore := len(s)
+	var minScoreChar byte
+	for c, score := range scores {
+		if score < minScore {
+			minScore = score
+			minScoreChar = c
+		}
+	}
+
+	return minScoreChar, minScore
+}
+
 func main() {
 
 	// Correct 1st: 10250
+	// Correct 2nd: 6188
 
 	s := aoccommons.ReadAll("input.txt")
 
 	streched := strechLoop(s)
-	fmt.Println(len(streched))
+	fmt.Println("Length of the stretched polymer:", len(streched))
 
-	//s := "dabAcCaCBAcCcaDA"
-	//fmt.Println(s)
-	//fmt.Println(strechLoop(s))
-	
+	minScoreChar, minScore := detectProblematicChar(s)
+	fmt.Printf("Problematic element: %c; resulting length: %d\n", minScoreChar, minScore)
+
 }
