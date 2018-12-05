@@ -6,6 +6,7 @@ import (
 	"log"
 	"strings"
 	"regexp"
+	"io/ioutil"
 )
 
 func CheckError(err error) {
@@ -38,6 +39,20 @@ func ReadLines(filename string) []string {
 	}
 
 	return lines
+
+}
+
+func ReadAll(filename string) string {
+	
+	file, err := os.Open(filename)
+	CheckError(err)
+	
+	reader := bufio.NewReader(file)
+	
+	data, err := ioutil.ReadAll(reader)
+	CheckError(err)
+
+	return string(data)
 
 }
 
