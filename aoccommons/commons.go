@@ -71,3 +71,12 @@ func RegexParse(expression *regexp.Regexp, s string) map[string]string {
 	return result
 
 }
+
+func AbsInt(b int) int {
+
+	if b < 0 {
+		return -b
+	}
+	return b
+
+}

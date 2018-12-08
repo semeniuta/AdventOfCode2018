@@ -5,19 +5,10 @@ import (
 	"github.com/semeniuta/AdventOfCode2018/aoccommons"
 )
 
-func absInt(b int) int {
-
-	if b < 0 {
-		return -b
-	}
-	return b
-
-}
-
 func areActive(a byte, b byte) bool {
 
 	diff := int(a) - int(b)
-	absDiff := absInt(diff)
+	absDiff := aoccommons.AbsInt(diff)
 	return absDiff == 32
 
 }
