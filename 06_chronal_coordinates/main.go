@@ -125,30 +125,30 @@ func manhattanDist(p1 point, p2 point) int {
 
 }
 
-func getNonBoundaryPoints(b boundary, points []point) map[int]bool {
+func getNonBoundaryPoints(b boundary, points []point, closest map[point]int) map[int]bool {
 
-	boundaryPoints := make(map[point]bool)
+	boundaryPoints := make(map[int]bool)
 	nonBoundaryPoints := make(map[int]bool)
 
-	for _, pt := range b.xMax.points {
-		boundaryPoints[pt] = true
+	for _, y := range []int{b.yMin.value, b.yMax.value} {
+		for x := b.xMin.value; x <= b.xMax.value; x++ {
+			pt := point{x, y}
+			idxClosest := closest[pt]
+			boundaryPoints[idxClosest] = true
+		}
 	}
 
-	for _, pt := range b.xMin.points {
-		boundaryPoints[pt] = true
+	for _, x := range []int{b.xMin.value, b.xMax.value} {
+		for y := b.yMin.value; y <= b.yMax.value; y++ {
+			pt := point{x, y}
+			idxClosest := closest[pt]
+			boundaryPoints[idxClosest] = true
+		}
 	}
 
-	for _, pt := range b.yMax.points {
-		boundaryPoints[pt] = true
-	}
-
-	for _, pt := range b.yMin.points {
-		boundaryPoints[pt] = true
-	}
-
-	for idx, pt := range points {
+	for idx := range points {
 		
-		_, ok := boundaryPoints[pt]
+		_, ok := boundaryPoints[idx]
 		if !ok {
 			nonBoundaryPoints[idx] = true
 		}
@@ -239,19 +239,15 @@ func findLargest(closest map[point]int, nonBoundaryPoints map[int]bool) (int, in
 
 }
 
-
 func main() {
 
-	points := readCoordinates("small.txt")
+	points := readCoordinates("input.txt")
 	b := determineBoundary(points)
-	nonBoundaryPoints := getNonBoundaryPoints(b, points)
 	closest := findClosest(b, points)
 
-	fmt.Println("Boundary:", b)
-	fmt.Println("Non-boundary points:")
-	for idx := range nonBoundaryPoints {
-		fmt.Println(points[idx])
-	}
+	nonBoundaryPoints := getNonBoundaryPoints(b, points, closest)
+
+	fmt.Println("Boundary:", b.xMin.value, b.xMax.value, b.yMin.value, b.yMax.value)
 
 	largestIdx, largestSize := findLargest(closest, nonBoundaryPoints)
 	fmt.Println("Largest:", points[largestIdx], largestSize)
