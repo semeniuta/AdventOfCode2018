@@ -80,3 +80,9 @@ func AbsInt(b int) int {
 	return b
 
 }
+
+func CompileRegex(s string) *regexp.Regexp {
+	r, err := regexp.Compile(s)
+	CheckError(err)
+	return r
+}

@@ -4,16 +4,9 @@ import (
 	"fmt"
 	"github.com/semeniuta/AdventOfCode2018/aoccommons"
 	"log"
-	"regexp"
 	"sort"
 	"strconv"
 )
-
-func compileRegex(s string) *regexp.Regexp {
-	r, err := regexp.Compile(s)
-	aoccommons.CheckError(err)
-	return r
-}
 
 type action int
 
@@ -36,9 +29,9 @@ type event struct {
 
 func processLines(lines []string) (map[int]*event, []int) {
 
-	reMain := compileRegex("^\\[(?P<year>\\d\\d\\d\\d)-(?P<month>\\d\\d)-(?P<day>\\d\\d) (?P<hours>\\d\\d):(?P<minutes>\\d\\d)\\] (?P<action>.*)$")
+	reMain := aoccommons.CompileRegex("^\\[(?P<year>\\d\\d\\d\\d)-(?P<month>\\d\\d)-(?P<day>\\d\\d) (?P<hours>\\d\\d):(?P<minutes>\\d\\d)\\] (?P<action>.*)$")
 
-	reBegin := compileRegex("^Guard #(?P<guardID>\\d+) begins shift$")
+	reBegin := aoccommons.CompileRegex("^Guard #(?P<guardID>\\d+) begins shift$")
 
 	events := make(map[int]*event)
 	var sortedKeys []int
